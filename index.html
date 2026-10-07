@@ -261,39 +261,60 @@ body.no-scroll{overflow:hidden}
 .media.is-missing > img,.media.is-missing > video{display:none}
 
 /* =========================================================
-   HERO
+   HERO · carrusel (foto, foto, video)
    ========================================================= */
-.hero{padding:0 0 clamp(16px,2vw,24px)}
-.hero__grid{display:grid;gap:clamp(8px,1.2vw,16px);padding:0 clamp(8px,1.2vw,16px)}
-.hero__main{position:relative;min-height:calc(100svh - var(--header-h) - 24px);display:flex;align-items:flex-end;color:#fff}
-.hero__main .media{position:absolute;inset:0}
-.hero__main .media::after{display:none;color:#7a7a7a;left:auto;right:28px;top:28px;transform:none;text-align:right;max-width:60%}
-@media (min-width:768px){.hero__main .media::after{display:block}}
-.hero__main::before{
-  content:"";position:absolute;inset:0;z-index:2;
-  background:linear-gradient(180deg, rgba(0,0,0,.05) 0%, rgba(0,0,0,.15) 40%, var(--overlay) 100%);
+.hero{position:relative;height:calc(100svh - var(--header-h));min-height:560px;max-height:1100px;overflow:hidden;background:#141414;color:#fff}
+.slide{
+  position:absolute;inset:0;display:flex;align-items:flex-end;
+  opacity:0;visibility:hidden;transition:opacity 1.1s var(--ease), visibility 0s linear 1.1s;
 }
-.hero__content{position:relative;z-index:3;padding:clamp(28px,5vw,72px);max-width:980px}
-.hero__content .eyebrow{color:rgba(255,255,255,.88)}
-.hero__title{font-size:var(--fs-h1);font-weight:300;letter-spacing:.015em;margin-bottom:24px}
-.hero__text{font-size:var(--fs-lead);letter-spacing:.04em;line-height:1.7;color:rgba(255,255,255,.92);max-width:640px;margin-bottom:36px}
+.slide.is-active{opacity:1;visibility:visible;transition:opacity 1.1s var(--ease), visibility 0s}
+.slide .media{position:absolute;inset:0;background:#1a1a1a}
+.slide .media::after{color:#8a8a8a}
+.slide--video .media::after{display:none}
+.slide .media > img{transform:scale(1.06);transition:transform 8s linear}
+.slide.is-active .media > img{transform:scale(1)}
+.slide::before{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(90deg, rgba(0,0,0,.42) 0%, rgba(0,0,0,.12) 55%, rgba(0,0,0,0) 100%),
+             linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,.45) 100%);
+}
+.hero__content{position:relative;z-index:3;width:100%;max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter) clamp(112px,14vh,150px)}
+.hero__content > *{max-width:900px}
+.hero__content .eyebrow{color:rgba(255,255,255,.9)}
+.hero__title{font-size:var(--fs-h1);font-weight:300;letter-spacing:.015em;margin-bottom:22px;text-shadow:0 1px 24px rgba(0,0,0,.25)}
+.hero__text{font-size:var(--fs-lead);letter-spacing:.04em;line-height:1.7;color:rgba(255,255,255,.92);max-width:640px;margin-bottom:34px}
 .hero__actions{display:flex;flex-wrap:wrap;gap:14px}
-.hero__side{display:grid;grid-template-columns:1fr 1fr;gap:clamp(8px,1.2vw,16px)}
-.hero__side .media{aspect-ratio:4/5}
-.hero__side figcaption{position:absolute;left:18px;bottom:16px;z-index:3;color:#fff;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase}
-.hero__side figure{margin:0;position:relative}
-.hero__side figure::after{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.45));pointer-events:none}
-.video-toggle{position:absolute;right:clamp(16px,2.5vw,32px);bottom:clamp(16px,2.5vw,32px);z-index:4;color:#fff;border:1px solid rgba(255,255,255,.6)}
-.video-toggle:hover{background:rgba(255,255,255,.15)}
-.video-toggle .i-play{display:none}
-.video-toggle[aria-pressed="true"] .i-play{display:block}
-.video-toggle[aria-pressed="true"] .i-pause{display:none}
+/* entrada del texto en cada diapositiva */
+.slide .hero__content > *{opacity:0;transform:translateY(18px);transition:opacity .8s var(--ease), transform .8s var(--ease)}
+.slide.is-active .hero__content > *{opacity:1;transform:none}
+.slide.is-active .hero__content > *:nth-child(2){transition-delay:.12s}
+.slide.is-active .hero__content > *:nth-child(3){transition-delay:.22s}
+.slide.is-active .hero__content > *:nth-child(4){transition-delay:.32s}
+.slide .sample--on-media{top:24px;left:var(--gutter)}
 
-@media (min-width:1024px){
-  .hero__grid{grid-template-columns:2.1fr 1fr}
-  .hero__side{grid-template-columns:1fr;grid-template-rows:1fr 1fr}
-  .hero__side .media{aspect-ratio:auto;height:100%}
-  .hero__side figure{min-height:0}
+.hero__controls{
+  position:absolute;z-index:5;left:0;right:0;bottom:clamp(28px,4vh,44px);
+  max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter);
+  display:flex;align-items:center;justify-content:flex-end;gap:6px;
+}
+.hero__controls .icon-btn{color:#fff;border:1px solid rgba(255,255,255,.55)}
+.hero__controls .icon-btn:hover{background:rgba(255,255,255,.14)}
+.hero__dots{display:flex;align-items:center;gap:2px;margin:0 6px}
+.hero__dot{position:relative;width:44px;height:44px;border:0;background:none;cursor:pointer;padding:0}
+.hero__dot::before{content:"";position:absolute;left:8px;right:8px;top:50%;height:2px;margin-top:-1px;background:rgba(255,255,255,.35)}
+.hero__dot::after{content:"";position:absolute;left:8px;top:50%;height:2px;margin-top:-1px;width:0;background:#fff}
+.hero__dot[aria-current="true"]::after{width:calc(100% - 16px);transition:width var(--slide-ms,7000ms) linear}
+.hero.is-paused .hero__dot[aria-current="true"]::after,.hero.is-holding .hero__dot[aria-current="true"]::after{transition:none}
+.hero__pause .i-play{display:none}
+.hero.is-paused .hero__pause .i-play{display:block}
+.hero.is-paused .hero__pause .i-pause{display:none}
+.hero__count{font-size:.8rem;letter-spacing:.14em;color:rgba(255,255,255,.85);margin-right:auto;font-variant-numeric:tabular-nums}
+@media (max-width:767px){
+  .hero__content{padding-bottom:128px}
+  .hero__count{display:none}
+  .hero__controls{justify-content:center}
+  .slide .sample--on-media{top:auto;bottom:86px;left:16px}
 }
 
 /* Franja de datos */
@@ -571,7 +592,8 @@ textarea.input{min-height:120px;resize:vertical}
       </div>
       <a class="mega__feature" href="#visita">
         <div class="media" data-label="Foto · obra terminada">
-          <img src="assets/menu-destacado.jpg" alt="Ventanas de PVC instaladas en una obra terminada" loading="lazy">
+          <img src="assets/menu-destacado.jpg" alt="Casa con patio interior y ventanal corredero" loading="lazy">
+          <span class="sample sample--on-media">Imagen de referencia</span>
         </div>
         <span>Agenda una visita técnica →</span>
       </a>
@@ -599,47 +621,75 @@ textarea.input{min-height:120px;resize:vertical}
 <main id="main">
 
 <!-- ======================= HERO ======================= -->
-<section class="hero" aria-labelledby="hero-title">
-  <div class="hero__grid">
-    <div class="hero__main">
-      <div class="media" data-label="Video · fabricación e instalación (assets/hero.mp4)">
-        <video class="js-hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-          <source src="assets/hero.mp4" type="video/mp4">
-        </video>
+<section class="hero" id="hero" aria-roledescription="carrusel" aria-label="Destacados de Faventec">
+  <div class="hero__slides" id="hero-slides" aria-live="off">
+
+    <article class="slide is-active" data-ms="7000" aria-roledescription="diapositiva" aria-label="1 de 3">
+      <div class="media" data-label="Foto (assets/hero-1.jpg)">
+        <img src="assets/hero-1.jpg" alt="Living con ventanales de piso a cielo abiertos hacia la terraza" width="1920" height="1178" fetchpriority="high">
       </div>
-      <span class="sample sample--on-media">Video de ejemplo</span>
+      <span class="sample sample--on-media">Imagen de referencia · reemplazar</span>
       <div class="hero__content">
-        <span class="eyebrow reveal">Fábrica propia en Santiago · Desde 2011</span>
-        <h1 class="hero__title reveal" data-delay="1" id="hero-title">Ventanas de PVC hechas a la medida de cada obra</h1>
-        <p class="hero__text reveal" data-delay="2">Fabricamos e instalamos ventanas y puertas termopanel con perfil Deceuninck. Un mismo equipo responde desde la medición hasta la garantía.</p>
-        <div class="hero__actions reveal" data-delay="3">
-          <a class="btn btn--light js-wa" data-wa="hero" href="#">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#i-wa"/></svg>
-            Cotizar por WhatsApp
-          </a>
+        <span class="eyebrow">Fábrica propia en Santiago · Desde 2011</span>
+        <h1 class="hero__title">Ventanas de PVC hechas a la medida de cada obra</h1>
+        <p class="hero__text">Fabricamos e instalamos ventanas y puertas termopanel con perfil Deceuninck. Un mismo equipo responde desde la medición hasta la garantía.</p>
+        <div class="hero__actions">
+          <a class="btn btn--light js-wa" data-wa="hero" href="#"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#i-wa"/></svg>Cotizar por WhatsApp</a>
           <a class="btn btn--light" href="#servicios">Ver servicios</a>
         </div>
       </div>
-      <button class="icon-btn video-toggle" type="button" aria-label="Pausar video de fondo" aria-pressed="false">
-        <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg>
-        <svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5v14l12-7z"/></svg>
-      </button>
-    </div>
+    </article>
 
-    <div class="hero__side">
-      <figure class="reveal" data-delay="1">
-        <div class="media" data-label="Foto · taller (assets/hero-1.jpg)">
-          <img src="assets/hero-1.jpg" alt="Equipo de Faventec armando una ventana de PVC en el taller" width="800" height="1000">
+    <article class="slide" data-ms="7000" aria-roledescription="diapositiva" aria-label="2 de 3">
+      <div class="media" data-label="Foto (assets/hero-2.jpg)">
+        <img src="assets/hero-2.jpg" alt="Puerta de acceso con marco y detalle de perfil en esquina" width="1920" height="1080" loading="lazy">
+      </div>
+      <span class="sample sample--on-media">Imagen de referencia · reemplazar</span>
+      <div class="hero__content">
+        <span class="eyebrow">Puertas y ventanales</span>
+        <h2 class="hero__title">Luz, aislación y silencio en cada espacio</h2>
+        <p class="hero__text">Termopanel y perfiles multicámara que mantienen la temperatura de su casa y bajan el ruido de la calle.</p>
+        <div class="hero__actions">
+          <a class="btn btn--light js-wa" data-wa="puertas" href="#"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#i-wa"/></svg>Cotizar puertas</a>
         </div>
-        <figcaption>Taller propio</figcaption>
-      </figure>
-      <figure class="reveal" data-delay="2">
-        <div class="media" data-label="Foto · obra instalada (assets/hero-2.jpg)">
-          <img src="assets/hero-2.jpg" alt="Ventanal de PVC instalado en una vivienda" width="800" height="1000">
+      </div>
+    </article>
+
+    <article class="slide slide--video" data-ms="24000" aria-roledescription="diapositiva" aria-label="3 de 3">
+      <div class="media" data-label="Video (assets/hero.mp4)" style="background:#1a1a1a url('assets/hero-video-poster.jpg') center/cover no-repeat">
+        <video class="js-hero-video" muted playsinline preload="none" poster="assets/hero-video-poster.jpg" aria-hidden="true">
+          <source src="assets/hero.mp4" type="video/mp4">
+          <source src="assets/hero.webm" type="video/webm">
+        </video>
+      </div>
+      <div class="hero__content">
+        <span class="eyebrow">Recambio de ventanas</span>
+        <h2 class="hero__title">Cambie sus ventanas antiguas por termopanel</h2>
+        <p class="hero__text">Retiramos las ventanas existentes e instalamos las nuevas en el mismo vano, con terminaciones limpias.</p>
+        <div class="hero__actions">
+          <a class="btn btn--light" href="#visita">Agendar visita técnica</a>
         </div>
-        <figcaption>Instalación en obra</figcaption>
-      </figure>
+      </div>
+    </article>
+  </div>
+
+  <div class="hero__controls">
+    <span class="hero__count" aria-hidden="true"><span class="js-count">01</span> / 03</span>
+    <button class="icon-btn hero__pause" type="button" aria-label="Pausar carrusel">
+      <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg>
+      <svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5v14l12-7z"/></svg>
+    </button>
+    <button class="icon-btn hero__prev" type="button" aria-label="Diapositiva anterior" aria-controls="hero-slides">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="hero__dots" role="group" aria-label="Elegir diapositiva">
+      <button class="hero__dot" type="button" aria-label="Ir a la diapositiva 1" aria-current="true"></button>
+      <button class="hero__dot" type="button" aria-label="Ir a la diapositiva 2"></button>
+      <button class="hero__dot" type="button" aria-label="Ir a la diapositiva 3"></button>
     </div>
+    <button class="icon-btn hero__next" type="button" aria-label="Diapositiva siguiente" aria-controls="hero-slides">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
   </div>
 </section>
 
@@ -702,8 +752,9 @@ textarea.input{min-height:120px;resize:vertical}
     <div class="tiles">
       <a class="tile reveal js-wa" data-wa="ventanas" href="#">
         <div class="media" data-label="Foto · ventanas (assets/servicio-ventanas.jpg)">
-          <img src="assets/servicio-ventanas.jpg" alt="Ventana de PVC termopanel corredera" loading="lazy" width="800" height="1000">
+          <img src="assets/servicio-ventanas.jpg" alt="Muro completo de ventanales correderos" loading="lazy" width="800" height="1000">
         </div>
+        <span class="sample sample--on-media">Imagen de referencia</span>
         <div class="tile__body">
           <h3 class="tile__title">Ventanas termopanel</h3>
           <ul class="tile__list"><li>Correderas · Abatibles · Oscilobatientes</li><li>Proyectantes · Paños fijos</li></ul>
@@ -712,8 +763,9 @@ textarea.input{min-height:120px;resize:vertical}
       </a>
       <a class="tile reveal js-wa" data-wa="puertas" data-delay="1" href="#">
         <div class="media" data-label="Foto · puertas (assets/servicio-puertas.jpg)">
-          <img src="assets/servicio-puertas.jpg" alt="Puerta balcón de PVC" loading="lazy" width="800" height="1000">
+          <img src="assets/servicio-puertas.jpg" alt="Dormitorio con puerta balcón de piso a cielo" loading="lazy" width="800" height="1000">
         </div>
+        <span class="sample sample--on-media">Imagen de referencia</span>
         <div class="tile__body">
           <h3 class="tile__title">Puertas y ventanales</h3>
           <ul class="tile__list"><li>Puertas de acceso · Puertas balcón</li><li>Ventanales correderos</li></ul>
@@ -722,8 +774,9 @@ textarea.input{min-height:120px;resize:vertical}
       </a>
       <a class="tile reveal js-wa" data-wa="recambio" data-delay="2" href="#">
         <div class="media" data-label="Foto · recambio (assets/servicio-recambio.jpg)">
-          <img src="assets/servicio-recambio.jpg" alt="Recambio de ventanas en un departamento" loading="lazy" width="800" height="1000">
+          <img src="assets/servicio-recambio.jpg" alt="Ventana nueva recién instalada, aún con film protector" loading="lazy" width="800" height="1000">
         </div>
+        <span class="sample sample--on-media">Imagen de stock</span>
         <div class="tile__body">
           <h3 class="tile__title">Recambio de ventanas</h3>
           <ul class="tile__list"><li>Casas y departamentos</li><li>Retiro de ventanas antiguas</li></ul>
@@ -752,7 +805,8 @@ textarea.input{min-height:120px;resize:vertical}
     </a>
   </div>
   <div class="media" data-label="Foto · proyecto inmobiliario (assets/constructoras.jpg)">
-    <img src="assets/constructoras.jpg" alt="Edificio con ventanas de PVC instaladas por Faventec" loading="lazy" width="1200" height="1400">
+    <img src="assets/constructoras.jpg" alt="Viviendas en obra gruesa con ventanas ya instaladas" loading="lazy" style="object-position:50% 78%" width="1200" height="1400">
+    <span class="sample sample--on-media">Imagen de stock</span>
   </div>
 </section>
 
@@ -1116,18 +1170,91 @@ document.querySelectorAll(".media > img").forEach(img => {
   if (img.complete && img.naturalWidth === 0) fail();
   img.addEventListener("error", fail);
 });
+/* Hero: carrusel (foto, foto, video) */
 (function(){
-  const video = document.querySelector(".js-hero-video");
-  const toggle = document.querySelector(".video-toggle");
-  const source = video.querySelector("source");
-  const fail = () => { video.parentElement.classList.add("is-missing"); toggle.hidden = true; };
-  source.addEventListener("error", fail);
-  video.addEventListener("error", fail);
-  const reduce = matchMedia("(prefers-reduced-motion: reduce)");
-  const pause = () => { video.pause(); toggle.setAttribute("aria-pressed", "true"); toggle.setAttribute("aria-label", "Reproducir video de fondo"); };
-  const play = () => { video.play().catch(() => {}); toggle.setAttribute("aria-pressed", "false"); toggle.setAttribute("aria-label", "Pausar video de fondo"); };
-  if (reduce.matches) pause();
-  toggle.addEventListener("click", () => video.paused ? play() : pause());
+  const hero = document.getElementById("hero");
+  const slides = [...hero.querySelectorAll(".slide")];
+  const dots = [...hero.querySelectorAll(".hero__dot")];
+  const pauseBtn = hero.querySelector(".hero__pause");
+  const count = hero.querySelector(".js-count");
+  const video = hero.querySelector(".js-hero-video");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let index = 0, timer = null, userPaused = reduce, holdPause = false;
+
+  // Video ausente: la diapositiva queda con el póster o el marcador
+  const sources = video.querySelectorAll("source");
+  const vfail = () => video.parentElement.classList.add("is-missing");
+  sources[sources.length - 1].addEventListener("error", vfail); video.addEventListener("error", vfail);
+
+  const paused = () => userPaused || holdPause;
+  const setInert = (el, off) => { el.inert = off; el.setAttribute("aria-hidden", off ? "true" : "false"); };
+
+  function schedule(){
+    clearTimeout(timer);
+    const s = slides[index];
+    const isVideo = s.classList.contains("slide--video");
+    if (isVideo) {
+      if (paused()) { video.pause(); return; }
+      video.play().catch(() => {});
+      // si el video no carga, avanza igual al cumplirse el tiempo
+      timer = setTimeout(next, +s.dataset.ms + 1500);
+    } else if (!paused()) {
+      timer = setTimeout(next, +s.dataset.ms);
+    }
+  }
+  function go(i){
+    const prev = index;
+    index = (i + slides.length) % slides.length;
+    slides.forEach((s, n) => { s.classList.toggle("is-active", n === index); setInert(s, n !== index); });
+    dots.forEach(d => d.removeAttribute("aria-current"));
+    hero.style.setProperty("--slide-ms", slides[index].dataset.ms + "ms");
+    count.textContent = String(index + 1).padStart(2, "0");
+    if (slides[prev].classList.contains("slide--video") && prev !== index) video.pause();
+    if (slides[index].classList.contains("slide--video")) {
+      if (video.preload === "none") { video.preload = "auto"; video.load(); }
+      try { video.currentTime = 0; } catch(e) {}
+    }
+    // reinicia la barra de progreso del punto activo
+    const d = dots[index]; d.removeAttribute("aria-current"); void d.offsetWidth; d.setAttribute("aria-current", "true");
+    schedule();
+  }
+  const next = () => go(index + 1);
+  video.addEventListener("ended", () => { if (!paused()) next(); });
+
+  function setUserPaused(v){
+    userPaused = v;
+    hero.classList.toggle("is-paused", userPaused);
+    pauseBtn.setAttribute("aria-label", v ? "Reanudar carrusel" : "Pausar carrusel");
+    if (v) { clearTimeout(timer); video.pause(); } else go(index);
+  }
+  pauseBtn.addEventListener("click", () => setUserPaused(!userPaused));
+  hero.querySelector(".hero__prev").addEventListener("click", () => go(index - 1));
+  hero.querySelector(".hero__next").addEventListener("click", () => go(index + 1));
+  dots.forEach((d, n) => d.addEventListener("click", () => go(n)));
+
+  // Se detiene mientras el foco del teclado está dentro del carrusel
+  hero.addEventListener("focusin", () => { holdPause = true; hero.classList.add("is-holding"); clearTimeout(timer); });
+  hero.addEventListener("focusout", e => { if (!hero.contains(e.relatedTarget)) { holdPause = false; hero.classList.remove("is-holding"); if (!paused()) schedule(); } });
+  hero.addEventListener("keydown", e => {
+    if (e.key === "ArrowRight") { go(index + 1); }
+    if (e.key === "ArrowLeft") { go(index - 1); }
+  });
+  // Deslizar en pantallas táctiles
+  let x0 = null;
+  hero.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, { passive: true });
+  hero.addEventListener("touchend", e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 50) go(index + (dx < 0 ? 1 : -1));
+  });
+  // Se detiene si la pestaña no está visible
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) { clearTimeout(timer); video.pause(); } else if (!paused()) schedule();
+  });
+
+  hero.classList.toggle("is-paused", userPaused);
+  if (reduce) pauseBtn.setAttribute("aria-label", "Reanudar carrusel");
+  go(0);
 })();
 
 /* Animaciones de entrada */

@@ -1,17 +1,20 @@
 # Fotos y video del sitio
 
-Coloca aquí los archivos con estos nombres exactos. Mientras falten, la página muestra un marcador gris con el nombre del archivo.
+Los archivos de esta carpeta ya están procesados para la web: misma temperatura de color (neutro cálido), menos brillo, altas luces suavizadas y bordes sombreados. Los archivos tal como se subieron quedan en `originales/`.
 
-| Archivo | Dónde aparece | Formato sugerido |
+| Archivo | Dónde aparece | Origen |
 |---|---|---|
-| hero.mp4 | Video principal del hero | MP4 H.264, 1920×1080, 10–20 s, sin audio, < 8 MB |
-| hero-1.jpg | Hero, foto superior derecha (taller) | 1200×1500 (vertical) |
-| hero-2.jpg | Hero, foto inferior derecha (obra) | 1200×1500 (vertical) |
-| servicio-ventanas.jpg | Servicios · Ventanas termopanel | 1200×1500 |
-| servicio-puertas.jpg | Servicios · Puertas y ventanales | 1200×1500 |
-| servicio-recambio.jpg | Servicios · Recambio | 1200×1500 |
-| constructoras.jpg | Sección constructoras | 1600×1800 |
-| menu-destacado.jpg | Menú desplegable de Servicios | 1200×750 |
-| equipo-1.jpg … equipo-4.jpg | Equipo (se muestran en blanco y negro) | 900×1200 |
+| hero-1.jpg | Hero, diapositiva 1 | heropic1.jpg · **LaCantina, reemplazar** |
+| hero-2.jpg | Hero, diapositiva 2 | heropic2.jpg · **LaCantina, reemplazar** |
+| hero.mp4 / hero.webm | Hero, diapositiva 3 (sin audio) | hero.mp4 subido |
+| hero-video-poster.jpg | Imagen mientras carga el video | cuadro del video |
+| servicio-ventanas.jpg | Servicios · Ventanas | LAC V2 FLD Render · **LaCantina, reemplazar** |
+| servicio-puertas.jpg | Servicios · Puertas | v2-swing_1 · **LaCantina, reemplazar** |
+| servicio-recambio.jpg | Servicios · Recambio | Unsplash (Fabian Kleiser) |
+| constructoras.jpg | Sección constructoras | Unsplash (Divaris Shirichena) |
+| menu-destacado.jpg | Menú desplegable de Servicios | New Buffalo Residence · **LaCantina, reemplazar** |
+| equipo-1.jpg … equipo-4.jpg | Equipo | pendiente |
 
-Antes de entregar, reemplaza también todo lo marcado con la etiqueta "Contenido de ejemplo" en index.html.
+Las imágenes de LaCantina son fotos comerciales de otra marca (puertas de aluminio y madera). Sirven solo como referencia para el prototipo: hay que reemplazarlas por obras de Faventec antes de publicar el sitio.
+
+Para reprocesar una foto nueva con el mismo tono, pídelo en la sesión o aplica el mismo ajuste: balance hacia neutro cálido, luminancia media ~40 %, desaturación leve y viñeta suave.
