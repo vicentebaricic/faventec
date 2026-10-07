@@ -590,7 +590,6 @@ textarea.input{min-height:120px;resize:vertical}
       <a class="mega__feature" href="#visita">
         <div class="media" data-label="Foto · obra terminada">
           <img src="assets/menu-destacado.jpg" alt="Casa con patio interior y ventanal corredero" loading="lazy">
-          <span class="sample sample--on-media">Imagen de referencia</span>
         </div>
         <span>Agenda una visita técnica →</span>
       </a>
@@ -625,7 +624,6 @@ textarea.input{min-height:120px;resize:vertical}
       <div class="media" data-label="Foto (assets/hero-1.jpg)">
         <img src="assets/hero-1.jpg" alt="Living con ventanales de piso a cielo abiertos hacia la terraza" width="1920" height="1178" fetchpriority="high">
       </div>
-      <span class="sample sample--on-media">Imagen de referencia · reemplazar</span>
       <div class="hero__content">
         <span class="eyebrow">Fábrica propia en Santiago · Desde 2011</span>
         <h1 class="hero__title">Ventanas de PVC hechas a la medida de cada obra</h1>
@@ -641,7 +639,6 @@ textarea.input{min-height:120px;resize:vertical}
       <div class="media" data-label="Foto (assets/hero-2.jpg)">
         <img src="assets/hero-2.jpg" alt="Puerta de acceso con marco y detalle de perfil en esquina" width="1920" height="1080" loading="lazy">
       </div>
-      <span class="sample sample--on-media">Imagen de referencia · reemplazar</span>
       <div class="hero__content">
         <span class="eyebrow">Puertas y ventanales</span>
         <h2 class="hero__title">Luz, aislación y silencio en cada espacio</h2>
@@ -730,7 +727,6 @@ textarea.input{min-height:120px;resize:vertical}
         <div class="media" data-label="Foto · ventanas (assets/servicio-ventanas.jpg)">
           <img src="assets/servicio-ventanas.jpg" alt="Muro completo de ventanales correderos" loading="lazy" width="800" height="1000">
         </div>
-        <span class="sample sample--on-media">Imagen de referencia</span>
         <div class="tile__body">
           <h3 class="tile__title">Ventanas termopanel</h3>
           <ul class="tile__list"><li>Correderas · Abatibles · Oscilobatientes</li><li>Proyectantes · Paños fijos</li></ul>
@@ -741,7 +737,6 @@ textarea.input{min-height:120px;resize:vertical}
         <div class="media" data-label="Foto · puertas (assets/servicio-puertas.jpg)">
           <img src="assets/servicio-puertas.jpg" alt="Dormitorio con puerta balcón de piso a cielo" loading="lazy" width="800" height="1000">
         </div>
-        <span class="sample sample--on-media">Imagen de referencia</span>
         <div class="tile__body">
           <h3 class="tile__title">Puertas y ventanales</h3>
           <ul class="tile__list"><li>Puertas de acceso · Puertas balcón</li><li>Ventanales correderos</li></ul>
@@ -752,7 +747,6 @@ textarea.input{min-height:120px;resize:vertical}
         <div class="media" data-label="Foto · recambio (assets/servicio-recambio.jpg)">
           <img src="assets/servicio-recambio.jpg" alt="Ventana nueva recién instalada, aún con film protector" loading="lazy" width="800" height="1000">
         </div>
-        <span class="sample sample--on-media">Imagen de stock</span>
         <div class="tile__body">
           <h3 class="tile__title">Recambio de ventanas</h3>
           <ul class="tile__list"><li>Casas y departamentos</li><li>Retiro de ventanas antiguas</li></ul>
@@ -782,7 +776,6 @@ textarea.input{min-height:120px;resize:vertical}
   </div>
   <div class="media" data-label="Foto · proyecto inmobiliario (assets/constructoras.jpg)">
     <img src="assets/constructoras.jpg" alt="Viviendas en obra gruesa con ventanas ya instaladas" loading="lazy" style="object-position:50% 78%" width="1200" height="1400">
-    <span class="sample sample--on-media">Imagen de stock</span>
   </div>
 </section>
 
@@ -1169,10 +1162,11 @@ document.querySelectorAll(".media > img").forEach(img => {
     const s = slides[index];
     const isVideo = s.classList.contains("slide--video");
     if (isVideo) {
-      if (paused()) { video.pause(); return; }
+      // el video corre salvo pausa explícita; el foco de teclado solo frena el avance
+      if (userPaused) { video.pause(); return; }
       video.play().catch(() => {});
       // si el video no carga, avanza igual al cumplirse el tiempo
-      timer = setTimeout(next, +s.dataset.ms + 1500);
+      if (!holdPause) timer = setTimeout(next, +s.dataset.ms + 1500);
     } else if (!paused()) {
       timer = setTimeout(next, +s.dataset.ms);
     }
@@ -1200,7 +1194,7 @@ document.querySelectorAll(".media > img").forEach(img => {
     userPaused = v;
     hero.classList.toggle("is-paused", userPaused);
     pauseBtn.setAttribute("aria-label", v ? "Reanudar carrusel" : "Pausar carrusel");
-    if (v) { clearTimeout(timer); video.pause(); } else go(index);
+    if (v) { clearTimeout(timer); video.pause(); } else schedule();
   }
   pauseBtn.addEventListener("click", () => setUserPaused(!userPaused));
   hero.querySelector(".hero__prev").addEventListener("click", () => go(index - 1));
@@ -1208,8 +1202,12 @@ document.querySelectorAll(".media > img").forEach(img => {
   dots.forEach((d, n) => d.addEventListener("click", () => go(n)));
 
   // Se detiene mientras el foco del teclado está dentro del carrusel
-  hero.addEventListener("focusin", () => { holdPause = true; hero.classList.add("is-holding"); clearTimeout(timer); });
-  hero.addEventListener("focusout", e => { if (!hero.contains(e.relatedTarget)) { holdPause = false; hero.classList.remove("is-holding"); if (!paused()) schedule(); } });
+  hero.addEventListener("focusin", e => {
+    // solo con navegación por teclado; un clic en flechas o puntos no detiene el carrusel
+    if (!e.target.matches(":focus-visible")) return;
+    holdPause = true; hero.classList.add("is-holding"); clearTimeout(timer);
+  });
+  hero.addEventListener("focusout", e => { if (holdPause && !hero.contains(e.relatedTarget)) { holdPause = false; hero.classList.remove("is-holding"); if (!paused()) schedule(); } });
   hero.addEventListener("keydown", e => {
     if (e.key === "ArrowRight") { go(index + 1); }
     if (e.key === "ArrowLeft") { go(index - 1); }
