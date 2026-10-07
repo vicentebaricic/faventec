@@ -192,7 +192,7 @@ button,input,select,textarea{font:inherit;letter-spacing:inherit;color:inherit}
 }
 .nav__link:hover,.nav__link[aria-expanded="true"]{background:var(--bg-alt)}
 .header__actions{display:flex;align-items:center;gap:10px}
-.header__cta{display:none;flex-direction:column;align-items:flex-end;gap:2px}
+.header__cta{display:none;align-items:center}
 .header__cta .btn{min-height:44px;padding:0 24px}
 .header__phone{white-space:nowrap;font-size:.82rem;letter-spacing:.04em;color:var(--text-2)}
 .header__phone a{font-weight:500;color:var(--text)}
@@ -560,7 +560,6 @@ textarea.input{min-height:120px;resize:vertical}
     <div class="header__actions">
       <div class="header__cta">
         <a class="btn js-wa" data-wa="header" href="#">Cotizar</a>
-        <span class="header__phone">WhatsApp <a class="js-wa" data-wa="header" href="#" data-wa-label></a></span>
       </div>
       <button class="icon-btn theme-toggle" type="button" aria-label="Cambiar entre modo claro y oscuro">
         <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg>
