@@ -286,14 +286,16 @@ body.no-scroll{overflow:hidden}
 .slide::before{
   content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
   background:linear-gradient(180deg, rgba(0,0,0,.38) 0%, rgba(0,0,0,0) 22%),
-             linear-gradient(90deg, rgba(0,0,0,.42) 0%, rgba(0,0,0,.12) 55%, rgba(0,0,0,0) 100%),
-             linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,.45) 100%);
+             linear-gradient(90deg, rgba(0,0,0,.34) 0%, rgba(0,0,0,.08) 45%, rgba(0,0,0,0) 70%),
+             linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,.4) 100%);
 }
-.hero__content{position:relative;z-index:3;width:100%;max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter) clamp(112px,14vh,150px)}
-.hero__content > *{max-width:900px}
+.hero__content{position:relative;z-index:3;width:100%;max-width:var(--maxw);margin:0 auto;padding:0 max(var(--gutter),72px) clamp(112px,14vh,150px)}
+.hero__content > *{max-width:600px}
 .hero__content .eyebrow{color:rgba(255,255,255,.9)}
-.hero__title{font-size:var(--fs-h1);font-weight:300;letter-spacing:.015em;margin-bottom:22px;text-shadow:0 1px 24px rgba(0,0,0,.25)}
-.hero__text{font-size:var(--fs-lead);letter-spacing:.04em;line-height:1.7;color:rgba(255,255,255,.92);max-width:640px;margin-bottom:34px}
+.hero__title{font-size:clamp(1.9rem,3.4vw,3.25rem);font-weight:300;letter-spacing:.015em;line-height:1.15;margin-bottom:16px;text-shadow:0 1px 24px rgba(0,0,0,.25)}
+.hero__text{font-size:1rem;letter-spacing:.04em;line-height:1.7;color:rgba(255,255,255,.92);max-width:480px;margin-bottom:26px}
+.hero__content .eyebrow{margin-bottom:14px}
+.hero__actions .btn{min-height:46px;padding:0 24px;font-size:.88rem}
 .hero__actions{display:flex;flex-wrap:wrap;gap:14px}
 /* entrada del texto en cada diapositiva */
 .slide .hero__content > *{opacity:0;transform:translateY(18px);transition:opacity .8s var(--ease), transform .8s var(--ease)}
@@ -306,24 +308,37 @@ body.no-scroll{overflow:hidden}
 .hero__controls{
   position:absolute;z-index:5;left:0;right:0;bottom:clamp(28px,4vh,44px);
   max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter);
-  display:flex;align-items:center;justify-content:flex-end;gap:6px;
+  display:flex;align-items:center;justify-content:space-between;gap:6px;pointer-events:none;
 }
-.hero__controls .icon-btn{color:#fff;border:1px solid rgba(255,255,255,.55)}
-.hero__controls .icon-btn:hover{background:rgba(255,255,255,.14)}
-.hero__dots{display:flex;align-items:center;gap:2px;margin:0 6px}
+.hero__controls > *{pointer-events:auto}
+.hero__dots{display:flex;align-items:center;gap:2px}
 .hero__dot{position:relative;width:44px;height:44px;border:0;background:none;cursor:pointer;padding:0}
-.hero__dot::before{content:"";position:absolute;left:8px;right:8px;top:50%;height:2px;margin-top:-1px;background:rgba(255,255,255,.35)}
-.hero__dot::after{content:"";position:absolute;left:8px;top:50%;height:2px;margin-top:-1px;width:0;background:#fff}
-.hero__dot[aria-current="true"]::after{width:calc(100% - 16px);transition:width var(--slide-ms,7000ms) linear}
-.hero.is-paused .hero__dot[aria-current="true"]::after,.hero.is-holding .hero__dot[aria-current="true"]::after{transition:none}
-.hero__pause .i-play{display:none}
-.hero.is-paused .hero__pause .i-play{display:block}
-.hero.is-paused .hero__pause .i-pause{display:none}
-.hero__count{font-size:.8rem;letter-spacing:.14em;color:rgba(255,255,255,.85);margin-right:auto;font-variant-numeric:tabular-nums}
+.hero__dot::before{content:"";position:absolute;left:8px;right:8px;top:50%;height:2px;margin-top:-1px;background:rgba(255,255,255,.35);transition:background-color var(--dur) var(--ease)}
+.hero__dot:hover::before{background:rgba(255,255,255,.7)}
+.hero__dot[aria-current="true"]::before{background:#fff}
+.hero__count{font-size:.8rem;letter-spacing:.14em;color:rgba(255,255,255,.85);font-variant-numeric:tabular-nums}
+/* Flechas a los lados, sin círculo */
+.hero__arrow{
+  position:absolute;z-index:6;top:50%;transform:translateY(-50%);
+  width:56px;height:88px;display:grid;place-items:center;
+  border:0;background:none;color:#fff;cursor:pointer;opacity:.85;
+  transition:opacity var(--dur) var(--ease);
+}
+.hero__arrow:hover{opacity:1}
+.hero__arrow svg{width:34px;height:34px;filter:drop-shadow(0 1px 6px rgba(0,0,0,.35));transition:transform var(--dur) var(--ease)}
+.hero__arrow--prev{left:clamp(4px,1.2vw,20px)}
+.hero__arrow--next{right:clamp(4px,1.2vw,20px)}
+.hero__arrow--prev:hover svg{transform:translateX(-3px)}
+.hero__arrow--next:hover svg{transform:translateX(3px)}
 @media (max-width:767px){
-  .hero__content{padding-bottom:128px}
+  .hero__content{padding:0 var(--gutter) 104px}
+  .hero__text{display:none}
+  .hero__actions .btn + .btn{display:none}
+  .hero__content .eyebrow{font-size:.7rem}
   .hero__count{display:none}
   .hero__controls{justify-content:center}
+  .hero__arrow{width:44px;height:72px;top:auto;bottom:clamp(28px,4vh,44px);transform:none}
+  .hero__arrow svg{width:26px;height:26px}
   .slide .sample--on-media{top:auto;bottom:86px;left:16px}
 }
 
@@ -620,7 +635,7 @@ textarea.input{min-height:120px;resize:vertical}
 <section class="hero" id="hero" aria-roledescription="carrusel" aria-label="Destacados de Faventec">
   <div class="hero__slides" id="hero-slides" aria-live="off">
 
-    <article class="slide is-active" data-ms="7000" aria-roledescription="diapositiva" aria-label="1 de 3">
+    <article class="slide is-active" aria-roledescription="diapositiva" aria-label="1 de 3">
       <div class="media" data-label="Foto (assets/hero-1.jpg)">
         <img src="assets/hero-1.jpg" alt="Living con ventanales de piso a cielo abiertos hacia la terraza" width="1920" height="1178" fetchpriority="high">
       </div>
@@ -635,7 +650,7 @@ textarea.input{min-height:120px;resize:vertical}
       </div>
     </article>
 
-    <article class="slide" data-ms="7000" aria-roledescription="diapositiva" aria-label="2 de 3">
+    <article class="slide" aria-roledescription="diapositiva" aria-label="2 de 3">
       <div class="media" data-label="Foto (assets/hero-2.jpg)">
         <img src="assets/hero-2.jpg" alt="Puerta de acceso con marco y detalle de perfil en esquina" width="1920" height="1080" loading="lazy">
       </div>
@@ -649,9 +664,9 @@ textarea.input{min-height:120px;resize:vertical}
       </div>
     </article>
 
-    <article class="slide slide--video" data-ms="24000" aria-roledescription="diapositiva" aria-label="3 de 3">
+    <article class="slide slide--video" aria-roledescription="diapositiva" aria-label="3 de 3">
       <div class="media" data-label="Video (assets/hero.mp4)" style="background:#1a1a1a url('assets/hero-video-poster.jpg') center/cover no-repeat">
-        <video class="js-hero-video" muted playsinline preload="none" poster="assets/hero-video-poster.jpg" aria-hidden="true">
+        <video class="js-hero-video" muted loop playsinline preload="none" poster="assets/hero-video-poster.jpg" aria-hidden="true">
           <source src="assets/hero.mp4" type="video/mp4">
           <source src="assets/hero.webm" type="video/webm">
         </video>
@@ -667,23 +682,19 @@ textarea.input{min-height:120px;resize:vertical}
     </article>
   </div>
 
+  <button class="hero__arrow hero__arrow--prev" type="button" aria-label="Diapositiva anterior" aria-controls="hero-slides">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" aria-hidden="true"><path d="M15 4l-8 8 8 8"/></svg>
+  </button>
+  <button class="hero__arrow hero__arrow--next" type="button" aria-label="Diapositiva siguiente" aria-controls="hero-slides">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" aria-hidden="true"><path d="M9 4l8 8-8 8"/></svg>
+  </button>
   <div class="hero__controls">
     <span class="hero__count" aria-hidden="true"><span class="js-count">01</span> / 03</span>
-    <button class="icon-btn hero__pause" type="button" aria-label="Pausar carrusel">
-      <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg>
-      <svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5v14l12-7z"/></svg>
-    </button>
-    <button class="icon-btn hero__prev" type="button" aria-label="Diapositiva anterior" aria-controls="hero-slides">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
-    </button>
     <div class="hero__dots" role="group" aria-label="Elegir diapositiva">
       <button class="hero__dot" type="button" aria-label="Ir a la diapositiva 1" aria-current="true"></button>
       <button class="hero__dot" type="button" aria-label="Ir a la diapositiva 2"></button>
       <button class="hero__dot" type="button" aria-label="Ir a la diapositiva 3"></button>
     </div>
-    <button class="icon-btn hero__next" type="button" aria-label="Diapositiva siguiente" aria-controls="hero-slides">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
-    </button>
   </div>
 </section>
 
@@ -1138,79 +1149,44 @@ document.querySelectorAll(".media > img").forEach(img => {
   if (img.complete && img.naturalWidth === 0) fail();
   img.addEventListener("error", fail);
 });
-/* Hero: carrusel (foto, foto, video) */
+/* Hero: carrusel (foto, foto, video) — avanza solo cuando el visitante lo cambia */
 (function(){
   const hero = document.getElementById("hero");
   const slides = [...hero.querySelectorAll(".slide")];
   const dots = [...hero.querySelectorAll(".hero__dot")];
-  const pauseBtn = hero.querySelector(".hero__pause");
   const count = hero.querySelector(".js-count");
   const video = hero.querySelector(".js-hero-video");
-  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let index = 0, timer = null, userPaused = reduce, holdPause = false;
+  let index = 0;
 
-  // Video ausente: la diapositiva queda con el póster o el marcador
+  // Video ausente: la diapositiva queda con el póster
   const sources = video.querySelectorAll("source");
   const vfail = () => video.parentElement.classList.add("is-missing");
   sources[sources.length - 1].addEventListener("error", vfail); video.addEventListener("error", vfail);
 
-  const paused = () => userPaused || holdPause;
-  const setInert = (el, off) => { el.inert = off; el.setAttribute("aria-hidden", off ? "true" : "false"); };
-
-  function schedule(){
-    clearTimeout(timer);
-    const s = slides[index];
-    const isVideo = s.classList.contains("slide--video");
-    if (isVideo) {
-      // el video corre salvo pausa explícita; el foco de teclado solo frena el avance
-      if (userPaused) { video.pause(); return; }
-      video.play().catch(() => {});
-      // si el video no carga, avanza igual al cumplirse el tiempo
-      if (!holdPause) timer = setTimeout(next, +s.dataset.ms + 1500);
-    } else if (!paused()) {
-      timer = setTimeout(next, +s.dataset.ms);
-    }
-  }
   function go(i){
-    const prev = index;
     index = (i + slides.length) % slides.length;
-    slides.forEach((s, n) => { s.classList.toggle("is-active", n === index); setInert(s, n !== index); });
-    dots.forEach(d => d.removeAttribute("aria-current"));
-    hero.style.setProperty("--slide-ms", slides[index].dataset.ms + "ms");
+    slides.forEach((s, n) => {
+      const on = n === index;
+      s.classList.toggle("is-active", on);
+      s.inert = !on;
+      s.setAttribute("aria-hidden", on ? "false" : "true");
+    });
+    dots.forEach((d, n) => n === index ? d.setAttribute("aria-current", "true") : d.removeAttribute("aria-current"));
     count.textContent = String(index + 1).padStart(2, "0");
-    if (slides[prev].classList.contains("slide--video") && prev !== index) video.pause();
     if (slides[index].classList.contains("slide--video")) {
       if (video.preload === "none") { video.preload = "auto"; video.load(); }
-      try { video.currentTime = 0; } catch(e) {}
+      video.play().catch(() => {});
+    } else {
+      video.pause();
     }
-    // reinicia la barra de progreso del punto activo
-    const d = dots[index]; d.removeAttribute("aria-current"); void d.offsetWidth; d.setAttribute("aria-current", "true");
-    schedule();
   }
-  const next = () => go(index + 1);
-  video.addEventListener("ended", () => { if (!paused()) next(); });
 
-  function setUserPaused(v){
-    userPaused = v;
-    hero.classList.toggle("is-paused", userPaused);
-    pauseBtn.setAttribute("aria-label", v ? "Reanudar carrusel" : "Pausar carrusel");
-    if (v) { clearTimeout(timer); video.pause(); } else schedule();
-  }
-  pauseBtn.addEventListener("click", () => setUserPaused(!userPaused));
-  hero.querySelector(".hero__prev").addEventListener("click", () => go(index - 1));
-  hero.querySelector(".hero__next").addEventListener("click", () => go(index + 1));
+  hero.querySelector(".hero__arrow--prev").addEventListener("click", () => go(index - 1));
+  hero.querySelector(".hero__arrow--next").addEventListener("click", () => go(index + 1));
   dots.forEach((d, n) => d.addEventListener("click", () => go(n)));
-
-  // Se detiene mientras el foco del teclado está dentro del carrusel
-  hero.addEventListener("focusin", e => {
-    // solo con navegación por teclado; un clic en flechas o puntos no detiene el carrusel
-    if (!e.target.matches(":focus-visible")) return;
-    holdPause = true; hero.classList.add("is-holding"); clearTimeout(timer);
-  });
-  hero.addEventListener("focusout", e => { if (holdPause && !hero.contains(e.relatedTarget)) { holdPause = false; hero.classList.remove("is-holding"); if (!paused()) schedule(); } });
   hero.addEventListener("keydown", e => {
-    if (e.key === "ArrowRight") { go(index + 1); }
-    if (e.key === "ArrowLeft") { go(index - 1); }
+    if (e.key === "ArrowRight") go(index + 1);
+    if (e.key === "ArrowLeft") go(index - 1);
   });
   // Deslizar en pantallas táctiles
   let x0 = null;
@@ -1220,13 +1196,12 @@ document.querySelectorAll(".media > img").forEach(img => {
     const dx = e.changedTouches[0].clientX - x0; x0 = null;
     if (Math.abs(dx) > 50) go(index + (dx < 0 ? 1 : -1));
   });
-  // Se detiene si la pestaña no está visible
+  // Pausa el video si la pestaña no está visible
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) { clearTimeout(timer); video.pause(); } else if (!paused()) schedule();
+    if (document.hidden) video.pause();
+    else if (slides[index].classList.contains("slide--video")) video.play().catch(() => {});
   });
 
-  hero.classList.toggle("is-paused", userPaused);
-  if (reduce) pauseBtn.setAttribute("aria-label", "Reanudar carrusel");
   go(0);
 })();
 
